@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
+
+    //이메일 중복
+    boolean existsByEmail(String email);
 }

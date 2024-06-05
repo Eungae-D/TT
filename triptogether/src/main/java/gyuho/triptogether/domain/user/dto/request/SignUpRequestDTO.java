@@ -1,6 +1,8 @@
 package gyuho.triptogether.domain.user.dto.request;
 
 import gyuho.triptogether.domain.user.entity.Role;
+import gyuho.triptogether.domain.user.entity.SocialType;
+import gyuho.triptogether.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,6 +27,22 @@ public class SignUpRequestDTO {
     @Size(min = 2, max =10, message = "닉네임은 2자이상 10자 이하로 입력해주세요.")
     private String nickname;
 
-    private Role role;
+
+    public SignUpRequestDTO(String email, String password, String nickname){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
+    public User toEntity(String passwordEncoding){
+        return User.builder()
+                .socialType(SocialType.GENERAL)
+                .email(email)
+                .password(passwordEncoding)
+                .nickname(nickname)
+                .role(Role.USER)
+                .profileImage(null)
+                .build();
+    }
 
 }

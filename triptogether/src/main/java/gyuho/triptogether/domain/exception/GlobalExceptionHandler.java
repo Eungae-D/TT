@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ApiResponse<?>> handleUserException(UserException e, HttpServletRequest request){
 
-        log.error("요청 경로 : { }, 실패 이유 : { }, 로그 : { }",request.getRequestURI(), e.getExceptionCode().getCode(), e.getLog());
+        log.error("요청 경로 : { }, 실패 이유 : { }, 로그 : { }", request.getRequestURI(), e.getExceptionCode().getCode(), e.getLog());
 
         return ResponseEntity.status(e.getExceptionCode().getStatus()).body(ApiResponse.createError(e.getExceptionCode().getCode(), e.getExceptionCode().getMessage()));
     }

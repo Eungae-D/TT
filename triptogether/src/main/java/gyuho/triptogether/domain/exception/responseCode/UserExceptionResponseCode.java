@@ -11,9 +11,6 @@ public enum UserExceptionResponseCode {
     EXISTS_USER(HttpStatus.CONFLICT, "U-001", "이미 존재하는 유저입니다.");
 
 
-
-
-
     private final HttpStatus status;
     private final String code;
     private final String message;

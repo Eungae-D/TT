@@ -34,7 +34,7 @@ public class SignUpRequestDTO {
         this.nickname = nickname;
     }
 
-    public User toEntity(String passwordEncoding){
+    public User toEntity (String passwordEncoding){
         return User.builder()
                 .socialType(SocialType.GENERAL)
                 .email(email)

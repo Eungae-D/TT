@@ -20,9 +20,8 @@ public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
     @Override
     //UserDetails인터페이스를 반환해야 하지만 CustomUserDetails는 UserDetails 인터페이스를 구현하고 있는 클래스이므로 가능하다.
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("load user by username");
-        User user = userRepository.findByEmail(username).orElseThrow(() -> new UserException(UserExceptionResponseCode.NOT_FOUND_USER,Long.parseLong(username)+"유저를 찾지 못했습니다."));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserException(UserExceptionResponseCode.USER_NOT_FOUND,Long.parseLong(email)+"유저를 찾지 못했습니다."));
         return new CustomUserDetails(user);
     }
 

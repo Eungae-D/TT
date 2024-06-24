@@ -1,6 +1,9 @@
 package gyuho.triptogether.global.config;
 
+import gyuho.triptogether.domain.token.repository.TokenRepository;
 import gyuho.triptogether.domain.user.entity.Role;
+import gyuho.triptogether.global.util.jwt.JWTFilter;
+import gyuho.triptogether.global.util.jwt.JwtUtil;
 import gyuho.triptogether.global.util.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,10 +24,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity // security 활성화 어노테이션
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final CorsConfigurationSource corsConfigurationSource;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtUtil jwtUtil;
+    private final TokenRepository tokenRepository;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -49,15 +54,18 @@ public class SecurityConfig {
                 //httpBasic방식 사용 x -> Bearer 방식
                 .httpBasic(auth -> auth.disable())
                 // corsConfig 사용
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 //세션 사용 하지 않음(ALWAYS, IF_REQUIRED, NEVER등)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.dispatcherTypeMatchers().permitAll()
-                        .requestMatchers("/api/v1/users/**").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/**").hasAnyRole(Role.USER.getName())
+                        .requestMatchers("/api/v1/refresh-token").permitAll()
+                        .requestMatchers("/api/v1/users").permitAll()
+                        .requestMatchers("/api/v1/users/email-check").permitAll()
+                        .requestMatchers("/api/v1/users/**").hasAuthority("USER")
                         .anyRequest().authenticated()) // 허가된 사람만 인가
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new JWTFilter(jwtUtil),LoginFilter.class)
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, tokenRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 

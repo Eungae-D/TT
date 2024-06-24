@@ -19,7 +19,8 @@ public class CorsConfig {
         config.setAllowedOrigins(List.of("http://localhost:3000")); // 허용할 출처 설정
         config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE","OPTIONS")); // 메서드 허용
         config.setAllowedHeaders(List.of("*")); //클라이언트가 보낼 수 있는 헤더
-        config.setExposedHeaders(List.of("*")); //클라이언트(브라우저)가 접근할 수 있는 헤더 지정
+        config.setExposedHeaders(List.of("Authorization")); //클라이언트(브라우저)가 접근할 수 있는 헤더 지정
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config); //** 뜻은 모든 URL 경로에 적용한다는 의미

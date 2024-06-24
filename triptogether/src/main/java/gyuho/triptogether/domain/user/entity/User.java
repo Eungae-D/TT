@@ -7,14 +7,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) //PUBLIC, PROTECTED, PRIVATE 차이 정리
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +45,8 @@ public class User extends BaseEntity {
     private List<Token> token = new ArrayList<>();
 
     @Builder
-    public User(SocialType socialType, String email, String password, String nickname, Role role, String profileImage){
+    public User(Long id, SocialType socialType, String email, String password, String nickname, Role role, String profileImage){
+        this.id = id;
         this.socialType = socialType;
         this.email = email;
         this.password = password;
@@ -52,4 +54,14 @@ public class User extends BaseEntity {
         this.role = role;
         this.profileImage = profileImage;
     }
+
+    @Builder
+    public User(Long id, String email, String password, Role role){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }
+
+

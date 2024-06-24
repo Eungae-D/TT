@@ -9,4 +9,13 @@ public enum Role {
     public String getName() {
         return this.name;
     }
+
+    public static Role fromString(String name) {
+        for (Role role : Role.values()) {
+            if (role.name.equalsIgnoreCase(name)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant " + Role.class.getCanonicalName() + "." + name);
+    }
 }

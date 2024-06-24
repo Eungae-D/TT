@@ -9,7 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,10 +34,25 @@ public class UserController {
     }
 
     // 회원가입
-    @PostMapping()
+    @PostMapping("/users")
     public ResponseEntity<ApiResponse<?>> register(@Valid @RequestBody SignUpRequestDTO signUpRequestDTO){
         userService.register(signUpRequestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.createSuccessNoContent("회원가입 성공."));
+    }
+    //연습
+    @GetMapping("/asd")
+    public ResponseEntity<ApiResponse<?>> check(){
+//        boolean result = userService.emailCheck(emailRequestDTO);
+        log.info("들어오나요");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
+        GrantedAuthority auth = iter.next();
+        String role = auth.getAuthority();
+        log.info(role);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.createSuccessNoContent("이메일 중복 체크 성공. (true = 중복, false = 사용 가능)"));
     }
 }

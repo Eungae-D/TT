@@ -21,11 +21,13 @@ public class CustomUserDetails implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return user.getEmail();
+                return user.getRole().getName();
             }
         });
         return collection;
     }
+    public User getUser(){ return user;}
+    public Long getUserId(){ return user.getId();}
 
     @Override
     public String getPassword() {
@@ -33,10 +35,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-
-        return user.getEmail();
-    }
+    public String getUsername() { return user.getEmail();}
 
     @Override
     public boolean isAccountNonExpired() {

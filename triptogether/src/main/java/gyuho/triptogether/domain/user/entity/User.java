@@ -55,12 +55,13 @@ public class User extends BaseEntity {
         this.profileImage = profileImage;
     }
 
-    @Builder
-    public User(Long id, String email, String password, Role role){
-        this.id = id;
+    public User(SocialType socialType, String email, String nickname, Role role, String profileImage){
+        this.socialType = socialType;
         this.email = email;
-        this.password = password;
+        this.nickname = nickname;
+        this.password = String.valueOf(email.hashCode()+nickname.hashCode());
         this.role = role;
+        this.profileImage = profileImage;
     }
 }
 

@@ -39,6 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //db에 유저가 있는지 판단
         Optional<User> byUser = userRepository.findByEmail(oAuth2Response.getEmail());
 
+
         //회원가입 유저 없으면 (이부분 수정)
         if(byUser.isEmpty()){
             String username = oAuth2Response.getProvider()+" "+oAuth2Response.getName();
@@ -48,7 +49,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userRepository.save(user);
             return new CustomOAuth2User(user);
         }else{
-            throw new OAuth2AuthenticationException("This email is already registered as a normal user.");
+            //회원가입 유저 있으면 로그인 진행
+            User user = byUser.get();
+            return new CustomOAuth2User(user);
         }
     }
 }

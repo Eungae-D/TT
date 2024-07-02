@@ -72,7 +72,7 @@ public class TokenServiceImpl implements TokenService {
         String role = jwtUtil.getRole(refresh);
 
         //make new AccessToken
-        String newAccessToken = jwtUtil.createAccessToken("accessToken", userId, role, 30*60*1000L);
+        String newAccessToken = jwtUtil.createAccessToken("accessToken", userId, role, 2*60*60*1000L);
         String newRefreshToken = jwtUtil.createRefreshToken("refreshToken", userId, 30*24*60*60*1000L);
 
         User user = userRepository.findById(userId).orElseThrow(()-> new UserException(UserExceptionResponseCode.USER_NOT_FOUND, userId + "번 유저를 찾지 못했습니다."));

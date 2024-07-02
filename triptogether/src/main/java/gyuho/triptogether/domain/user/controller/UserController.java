@@ -34,7 +34,7 @@ public class UserController {
     }
 
     // 회원가입
-    @PostMapping("/users")
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<?>> register(@Valid @RequestBody SignUpRequestDTO signUpRequestDTO){
         userService.register(signUpRequestDTO);
 

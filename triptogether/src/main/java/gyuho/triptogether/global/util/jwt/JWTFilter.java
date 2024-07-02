@@ -84,7 +84,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 .role(userRole)
                 .build();
 
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userId,null,);
         // UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
 

@@ -79,8 +79,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-        //유효기간 30분
-        String accessToken = jwtUtil.createAccessToken("accessToken", userId, role,30*60*1000L);
+        //유효기간 2시간
+        String accessToken = jwtUtil.createAccessToken("accessToken", userId, role,2*60*60*1000L);
         //유효기간 30일
         String refreshToken = jwtUtil.createRefreshToken("refreshToken", userId, 30*24*60*60*1000L);
 
